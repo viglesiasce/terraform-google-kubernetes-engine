@@ -30,7 +30,7 @@ resource "google_container_cluster" "zonal_primary" {
   zone              = var.zones[0]
   node_locations    = slice(var.zones, 1, length(var.zones))
   cluster_ipv4_cidr = var.cluster_ipv4_cidr
-  network           = data.google_compute_network.gke_network.self_link
+  network           = var.network
 
   dynamic "network_policy" {
     for_each = local.cluster_network_policy
@@ -41,7 +41,7 @@ resource "google_container_cluster" "zonal_primary" {
     }
   }
 
-  subnetwork         = data.google_compute_subnetwork.gke_subnetwork.self_link
+  subnetwork         = var.subnetwork
   min_master_version = local.kubernetes_version_zonal
 
   logging_service    = var.logging_service
